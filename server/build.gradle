@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'ro.mpp'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':repository')
+    implementation project(':service')
+    implementation project(':network')
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'ro.mpp.Main'
+}
+
+jar {
+    duplicatesStrategy (DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes('Main-Class':'ro.mpp.Main')
+    }
+    from {
+        configurations.runtimeClasspath.collect{it.isDirectory()?it:zipTree(it)}
+    }
+}

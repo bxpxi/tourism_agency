@@ -1,0 +1,8 @@
+rootProject.name = 'proiect_java_sockets'
+include 'domain'
+include 'repository'
+include 'service'
+include 'client'
+include 'network'
+include 'server'
+

@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+group = 'ro.mpp'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = '22.0.1'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+application {
+    mainClass = 'ro.mpp.Application'
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':repository')
+    implementation project(':service')
+    implementation project(':network')
+
+    implementation('org.controlsfx:controlsfx:11.1.1')
+    implementation('com.dlsc.formsfx:formsfx-core:11.5.0') {
+        exclude(group: 'org.openjfx')
+    }
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        resources {
+            // Include both resources and Java directories (some people put FXML in java)
+            srcDirs = ["src/main/resources", "src/main/java"]
+            includes = ["**/*.fxml", "**/*.css", "**/*.properties"]
+        }
+    }
+}
+
+jar {
+    duplicatesStrategy (DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes('Main-Class':'ro.mpp.Application')
+    }
+    from {
+        configurations.runtimeClasspath.collect{it.isDirectory()?it:zipTree(it)}
+    }
+    // This ensures resources are included in the JAR
+    from sourceSets.main.output
+    from sourceSets.main.allSource
+}
+
