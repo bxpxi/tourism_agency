@@ -3,6 +3,7 @@ Functionalities:
 - view flights
 - filter flights
 - buy tickets for clients
+  
 Non-functional requirements:
 - server + client in Java (the server is also compatible with C# clients - see the repository for that app)
 - distributed observer pattern
